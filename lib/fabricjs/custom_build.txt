@@ -1,0 +1,7 @@
+Animation
+Free Drawing
+Interaction
+Path
+Polyline
+________________
+Remove All
