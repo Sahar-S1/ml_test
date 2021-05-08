@@ -38,13 +38,56 @@ recogBtn.addEventListener('click', () => {
         var predictions = await model.predict(tensor).data();
         var maxPrediction = Math.max(...predictions)
         var prediction = predictions.indexOf(maxPrediction);    
+
+        var predictionsPlot = [];
+
+        for(var valIndex = 0; valIndex < predictions.length; valIndex++)
+        {
+            predictionsPlot[valIndex] = (predictions[valIndex] * 100).toFixed(2);
+        }
         
         console.log(tensor);
         console.log(tensor.array());
         console.log(predictions);
         console.log(prediction);
 
-        alert(`You have written ${prediction} (${(maxPrediction * 100).toFixed(2)} % sure)`);
+        console.log(predictionsPlot);
+
+        var areaChartData = {
+            labels  : ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+            datasets: [
+              {
+                label               : 'Predictions',
+                backgroundColor     : 'rgba(60,141,188,0.9)',
+                borderColor         : 'rgba(60,141,188,0.8)',
+                pointRadius          : false,
+                pointColor          : '#3b8bba',
+                pointStrokeColor    : 'rgba(60,141,188,1)',
+                pointHighlightFill  : '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data                : predictionsPlot
+              },
+            ]
+          }
+
+         //-------------
+        //- BAR CHART -
+        //-------------
+        var barChartCanvas = $('#recognitionResults').get(0).getContext('2d')
+        var barChartData = $.extend(true, {}, areaChartData)
+
+        var barChartOptions = {
+        responsive              : true,
+        maintainAspectRatio     : false,
+        datasetFill             : false
+        }
+
+        new Chart(barChartCanvas, {
+        type: 'bar',
+        data: barChartData,
+        options: barChartOptions
+        })
+
 
         console.log("%c ====== END ======", "background: #000; color: #fff");
     })
